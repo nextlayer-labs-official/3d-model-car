@@ -45,7 +45,7 @@ export function useScrollAnimation(containerRef: RefObject<HTMLDivElement | null
           trigger: containerRef.current,
           start: 'top top',
           end:   'bottom bottom',
-          scrub: 1.2,
+          scrub: 0.6,
           invalidateOnRefresh: true,
         },
       });
@@ -80,27 +80,28 @@ export function useScrollAnimation(containerRef: RefObject<HTMLDivElement | null
       });
 
       /* ── S3 → S4  (180° → 270°)
-         Text to RIGHT → car in LEFT gap
-         Match S1→S2 angle but from the opposite rear quarter                */
+         At 270° rotation: front (dashboard/windshield) = world −X, rear = +X.
+         Camera at the dashboard end, looking backward toward rear seats.
+         This reveals the full cabin: steering wheel, front seats, rear seats.  */
       tl.to(animState, {
         rotationY: Math.PI * 1.5,
-        cameraX:  -2.6,
-        cameraY:   1.2,
-        cameraZ:   5.8,
-        targetX:   1.8,   // look right → car in LEFT gap
-        targetY:   0.6,
+        cameraX:  -1.6,   // dashboard / front of cabin (front = −X at 270°)
+        cameraY:   1.05,  // slightly above seat level — eye height
+        cameraZ:   0.15,  // tiny passenger-side offset for natural composition
+        targetX:   2.0,   // look toward rear seats
+        targetY:   0.45,  // aim at seat cushion / floor level
         targetZ:   0,
         ease: 'none', duration: 1,
       });
 
       /* ── S4 → S5  (270° → 360°)
-         Full revolution complete — car centred, camera pulls back and rises
-         for a cinematic reveal shot over the roof                           */
+         Camera bursts out through the windshield / front glass and pulls back
+         for a wide cinematic CTA reveal of the full car                     */
       tl.to(animState, {
         rotationY: Math.PI * 2,
         cameraX:   0,
-        cameraY:   2.8,   // elevated hero angle looking down slightly
-        cameraZ:   8.0,   // pulled back so whole car fits
+        cameraY:   2.8,
+        cameraZ:   8.0,   // sweeps out from inside → far back
         targetX:   0,
         targetY:   0.5,
         targetZ:   0,
